@@ -4,7 +4,8 @@
   "description": "Server to connect the client with the MonicaHQ API",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node index.js"
   },
   "author": "Julio Martinez",
   "license": "ISC",
