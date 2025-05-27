@@ -65,7 +65,7 @@ module.exports = {
     try {
       const response = await monicaAPI.post(
         `/contacts/${associateTagData.id}/setTags`,
-        associateTagData
+        associateTagData.tags
       );
       return response.data;
     } catch (error) {

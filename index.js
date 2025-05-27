@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const {
   getGenders,
   getCountries,
@@ -14,6 +15,14 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(
+  cors({
+    origin: "https://crm-form.netlify.app", // o usa "*" si estás probando
+  })
+);
+
+app.use(express.json());
 
 //get request
 
