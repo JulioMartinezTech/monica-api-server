@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
+const upload = multer();
 const {
   getGenders,
   getCountries,
@@ -124,12 +126,21 @@ app.post("/occupation", async (req, res) => {
     res.status(500).json({ error: "Error when creating the occupation" });
   }
 });
-app.post("/document", async (req, res) => {
+app.post("/document", upload.single("document"), async (req, res) => {
   try {
-    const body = req.body;
-    const response = await createDocument(body);
+    const contact_id = req.body.contact_id;
+    const file = req.file;
+
+    if (!file || !contact_id) {
+      return res.status(400).json({ error: "Missing file or contact_id" });
+    }
+
+    // Envía los datos a MonicaHQ a través del servicio
+    const response = await createDocument({ contact_id, file });
+
     res.status(201).json(response);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error when creating document" });
   }
 });

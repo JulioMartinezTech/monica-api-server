@@ -1,4 +1,5 @@
 const axios = require("axios");
+const FormData = require("form-data");
 require("dotenv").config();
 
 const monicaAPI = axios.create({
@@ -112,15 +113,31 @@ module.exports = {
     }
   },
 
-  createDocument: async (documentData) => {
+  createDocument: async ({ contact_id, file }) => {
     try {
-      const response = await monicaAPI.post("/documents", documentData);
+      const formData = new FormData();
+      formData.append("contact_id", contact_id);
+      formData.append("document", file.buffer, file.originalname);
+
+      const response = await axios.post(
+        `${process.env.MONICA_BASE_URL}/documents`,
+        formData,
+        {
+          headers: {
+            ...formData.getHeaders(),
+            Authorization: `Bearer ${process.env.MONICA_API_TOKEN}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
       return response.data;
     } catch (error) {
       console.error(
         "Error when creating the document",
         error.response?.data || error.message
       );
+      throw error;
     }
   },
 };
