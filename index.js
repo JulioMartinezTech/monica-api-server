@@ -16,9 +16,24 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = [
+  "https://crm-form.netlify.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: "https://crm-form.netlify.app", // o usa "*" si estás probando
+    origin: function (origin, callback) {
+      if (!origin) {
+        //Allow request without 'Origin' like Postman or curl
+        return callback(null, true);
+      }
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("You shall not pass"));
+      }
+    },
   })
 );
 
