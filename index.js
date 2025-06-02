@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
   "https://crm-form.netlify.app",
-  "http://localhost:5173",
+  "http://blacklistory.com",
 ];
 
 app.use(
